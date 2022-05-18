@@ -1,19 +1,37 @@
 import sys
 
+class CodeElement:
+    indent_size = 2
+    def __init__(self, name='') -> None:
+        self.name = name.strip() 
+        self.elements = []
+
+    def __str__(self):
+        lines = ["class " + self.name + ":"] 
+        if not self.elements:
+            str_pass = ' ' * (self.indent_size) + 'pass'
+            lines.append(str_pass) 
+        else:
+            str_init = ' ' * (self.indent_size) + "def __init__(self):"
+            lines.append(str_init)
+            for field in self.elements:
+                i = ' ' * (self.indent_size*2)
+                i += "self." + field[0].strip() 
+                i += " = " + field[1].strip()
+                lines.append(i)
+        return '\n'.join(lines)
+
 # ваше решение
 class CodeBuilder:
     def __init__(self, root_name):
-        # todo
-        pass
+        self.code = CodeElement(root_name)
 
     def add_field(self, type, name):
-        # todo
-        pass
+        self.code.elements.append( (type, name) )
+        return self
 
     def __str__(self):
-        # todo
-         
-        return ""
+        return str(self.code)
 
 
 

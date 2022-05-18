@@ -27,6 +27,10 @@ class HtmlElement:
     def __str__(self):
         return self.__str(0)
 
+    @staticmethod
+    def create(name):
+        return HtmlBuilder(name)
+
 class HtmlBuilder:
     def __init__(self, root_name):
         self.root_name = root_name
@@ -37,11 +41,22 @@ class HtmlBuilder:
             HtmlElement(child_name, child_text)
         )
 
+    def add_child_fluent(self, child_name, child_text):
+        self.__root.elements.append(
+            HtmlElement(child_name, child_text)
+        )
+        return self
+
     def __str__(self) -> str:
         return str(self.__root)
+        
 
 if __name__ == "__main__":
     builder = HtmlBuilder('ul')
     builder.add_child('li','first')
     builder.add_child('li','second')
     print(builder)
+
+    builder2 = HtmlBuilder('ul')
+    builder2.add_child_fluent('li','Hello').add_child_fluent('li','world')
+    print(builder2)

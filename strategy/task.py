@@ -58,12 +58,34 @@ class QuadraticEquationSolver:
         return x1, x2
 
 
+class FirstTestSuite(unittest.TestCase):
+    def test_ordinary(self):
+        a, b, c = "1 10 16".split()
+        strategy = OrdinaryDiscriminantStrategy()
+        solver = QuadraticEquationSolver(strategy)
+        results = solver.solve(int(a), int(b), int(c))
+        result = f'{results}'
+        self.assertEqual("((-2+0j), (-8+0j))", result)
+
+    def test_real(self):
+        a, b, c = "1 10 16".split()
+        strategy = RealDiscriminantStrategy()
+        solver = QuadraticEquationSolver(strategy)
+        results = solver.solve(int(a), int(b), int(c))
+        result = f'{results[0].real} {results[1].imag} '
+        result += f'{math.isnan(results[0].real)} {math.isnan(results[1].imag)}'
+        self.assertEqual("-2.0 0.0 False False", result)
+
+    def test_real_none(self):
+        a, b, c = "1 1 1".split()
+        strategy = RealDiscriminantStrategy()
+        solver = QuadraticEquationSolver(strategy)
+        results = solver.solve(int(a), int(b), int(c))
+        result = f'{math.isnan(results[0])} {math.isnan(results[1])}'
+        self.assertEqual("True True", result)
+
+
 if __name__ == "__main__":
     unittest.main()
-    a, b, c = 1, 2, 3
-    strategy1 = RealDiscriminantStrategy()
-    strategy2 = OrdinaryDiscriminantStrategy()
-    print(QuadraticEquationSolver(strategy1).solve((a), (b), (c)))
-    print(QuadraticEquationSolver(strategy2).solve((a), (b), (c)))
-    print(QuadraticEquationSolver(strategy2).solve((a), (b), (c)))
+
 
